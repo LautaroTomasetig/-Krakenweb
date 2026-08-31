@@ -255,11 +255,11 @@ function sendQuote() {
   );
 }
 useHead({
-  title: "Catálogo | Kraken Group",
+  title: "Catálogo | Kraken",
   meta: [
     {
       name: "description",
-      content: "Catálogo de productos industriales Kraken Group.",
+      content: "Catálogo de productos industriales Kraken.",
     },
   ],
 });
