@@ -6,6 +6,12 @@ export default defineNuxtConfig({
   runtimeConfig: {
     adminEmail: '',
     adminPassword: '',
+    firebaseApiKey: '',
+    firebaseAuthDomain: '',
+    firebaseProjectId: '',
+    firebaseStorageBucket: '',
+    firebaseMessagingSenderId: '',
+    firebaseAppId: '',
   },
   app: {
     head: {

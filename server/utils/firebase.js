@@ -1,19 +1,20 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+import { getApps, initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
+const config = useRuntimeConfig();
 const firebaseConfig = {
-  apiKey: "AIzaSyBUVp7_UA1ugXF9NxOPxEWKtyX4wGfNC2E",
-  authDomain: "kraken-20042.firebaseapp.com",
-  projectId: "kraken-20042",
-  storageBucket: "kraken-20042.firebasestorage.app",
-  messagingSenderId: "292491760773",
-  appId: "1:292491760773:web:1f8f1f5ab946a596be45ec"
+  apiKey: config.firebaseApiKey,
+  authDomain: config.firebaseAuthDomain,
+  projectId: config.firebaseProjectId,
+  storageBucket: config.firebaseStorageBucket,
+  messagingSenderId: config.firebaseMessagingSenderId,
+  appId: config.firebaseAppId,
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+if (Object.values(firebaseConfig).some((value) => !value)) {
+  throw new Error("Faltan variables de entorno de Firebase. Revisá el archivo .env.");
+}
+
+const app = getApps()[0] || initializeApp(firebaseConfig);
 export const db = getFirestore(app);
