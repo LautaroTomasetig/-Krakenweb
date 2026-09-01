@@ -1,4 +1,17 @@
-# Nuxt Minimal Starter
+# Kraken Web
+
+El sitio público tiene dos páginas: `/` y `/catalogo`. El acceso a la gestión no tiene registro y se encuentra en `/admin/login`.
+
+## Administración
+
+Copiá `.env.example` como `.env` y definí las credenciales privadas del único administrador:
+
+```bash
+NUXT_ADMIN_EMAIL=admin@example.com
+NUXT_ADMIN_PASSWORD=una-clave-segura
+```
+
+Después iniciá el proyecto con `npm run dev` y entrá a `/admin/login`. El panel `/admin/productos` permite crear, editar y eliminar productos, incluyendo imágenes y rangos de precio. Los cambios se guardan en `server/data/products.json`.
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 

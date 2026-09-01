@@ -1,46 +1,7 @@
 <template>
   <div v-if="$route.path === '/'" class="site-shell">
     <NuxtRouteAnnouncer />
-    <header
-      class="site-header"
-      :class="{ 'site-header-scrolled': hasScrolled }"
-    >
-      <a class="brand" href="#inicio" aria-label="Kraken Group inicio">
-        <img
-          src="/img/logo-kraken.png"
-          alt="Kraken Group Logo"
-          class="brand-logo"
-        />
-      </a>
-      <nav class="desktop-nav" aria-label="Navegación principal">
-        <a href="#servicios">Servicios</a><a href="#galeria">Galería</a
-        ><a href="#catalogo">Catálogo</a><a href="#nosotros">Nosotros</a
-        ><a href="#contacto">Contacto</a>
-      </nav>
-      <!-- <button class="header-cta" @click="sendWhatsApp('Hola Kraken, quiero hablar con un especialista.')">Hablar con un especialista <ArrowUpRight :size="16" /></button> -->
-      <button
-        class="quote-cart"
-        aria-label="Abrir carrito de cotización"
-        @click="quoteCartOpen = true"
-      >
-        <ShoppingCart :size="19" /><strong>{{ formatPrice(quoteTotal) }}</strong
-        ><span class="quote-cart-count">{{ quoteItemCount }}</span>
-      </button>
-      <button
-        class="menu-toggle"
-        aria-label="Abrir menú"
-        @click="mobileMenuOpen = !mobileMenuOpen"
-      >
-        <Menu :size="22" />
-      </button>
-      <nav v-if="mobileMenuOpen" class="mobile-nav">
-        <a href="#servicios" @click="mobileMenuOpen = false">Servicios</a
-        ><a href="#galeria" @click="mobileMenuOpen = false">Galería</a
-        ><a href="#catalogo" @click="mobileMenuOpen = false">Catálogo</a
-        ><a href="#nosotros" @click="mobileMenuOpen = false">Nosotros</a
-        ><a href="#contacto" @click="mobileMenuOpen = false">Contacto</a>
-      </nav>
-    </header>
+    <SiteHeader />
 
     <main id="inicio">
       <section class="hero section-grid">
@@ -50,23 +11,22 @@
           </div>
           <h1>Soluciones industriales<br /><em>que toman forma.</em></h1>
           <p>
-            Diseñamos, fabricamos e innovamos para que tus proyectos avancen con
-            la precisión que exige la industria.
+            Racks y estanterías metálicas de alta resistencia para ordenar,
+            proteger y hacer crecer tu operación.
           </p>
           <div class="hero-actions">
-            <a class="button button-primary" href="#catalogo"
-              >Ver catálogo <ArrowUpRight :size="18" /></a
+            <a class="button button-primary" href="/catalogo?categoria=racks"
+              >Ver Racks <ArrowUpRight :size="18" /></a
             ><button
               class="button button-ghost"
               @click="sendWhatsApp('Hola Kraken, quiero cotizar un proyecto.')"
             >
               <MessageCircle :size="18" /> Cotizar ahora
             </button>
+            
           </div>
-          <div class="trust-row">
-            <span><strong>10+</strong> años de trayectoria</span
-            ><span><strong>24/7</strong> respuesta comercial</span
-            ><span><strong>100%</strong> bajo plano</span>
+          <div class="trust-row hero-promises">
+            <span><strong>10+</strong>años de tratyectoria</span><span><strong>24/7</strong>respuesta comercial</span><span><strong>100%</strong> nacional</span>
           </div>
         </div>
         <div class="hero-visual reveal">
@@ -86,8 +46,36 @@
           <div class="visual-caption">
             <span>01 / 04</span> <span>PLANTA MALVINAS ARGENTINAS</span>
           </div>
+      
         </div>
       </section>
+
+      
+
+      <section id="categorias" class="home-categories">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">01 / Explorá la línea</div>
+            <h2>Nuestras <em>categorías.</em></h2>
+          </div>
+          <p>Encontrá la solución adecuada para tu depósito, comercio o proyecto industrial.</p>
+        </div>
+        <div class="category-grid">
+          <NuxtLink class="category-card" to="/catalogo?categoria=racks">
+            <img src="/img/moldes.JPG" alt="Racks metálicos industriales" />
+            <div><Box :size="20" /><h3>Racks</h3><span>Alta resistencia · modular <ArrowUpRight :size="16" /></span></div>
+          </NuxtLink>
+          <a class="category-card" href="#servicios">
+            <img src="/img/torneria.JPG" alt="Servicios de fabricación industrial" />
+            <div><Factory :size="20" /><h3>Servicios</h3><span>Ingeniería · fabricación <ArrowUpRight :size="16" /></span></div>
+          </a>
+          <NuxtLink class="category-card" to="/catalogo">
+            <img src="/img/final.JPG" alt="Otros productos industriales" />
+            <div><PackageCheck :size="20" /><h3>Otros productos</h3><span>Soluciones a medida <ArrowUpRight :size="16" /></span></div>
+          </NuxtLink>
+        </div>
+      </section>
+
 
       <section class="metrics-band">
         <div>
@@ -104,7 +92,7 @@
 
       <section id="nosotros" class="about-section">
         <div class="about-copy">
-          <div class="eyebrow">01 / Sobre Kraken</div>
+          <div class="eyebrow">02 / Sobre Kraken</div>
           <h2>Una década<br /><em>haciendo industria.</em></h2>
           <p>
             Somos un equipo de ingeniería y fabricación metalúrgica enfocado en
@@ -144,7 +132,7 @@
       <section id="servicios" class="content-section services-section">
         <div class="section-heading">
           <div>
-            <div class="eyebrow">02 / Servicios</div>
+            <div class="eyebrow">03 / Servicios</div>
             <h2>
               Todo lo que tu proyecto<br /><em>necesita para avanzar.</em>
             </h2>
@@ -190,7 +178,7 @@
       </section>
 
       <section id="proceso" class="process-section">
-        <div class="eyebrow">03 / Método Kraken</div>
+        <div class="eyebrow">04 / Método Kraken</div>
         <h2>Precisión en cada <em>movimiento.</em></h2>
         <div class="process-grid">
           <div>
@@ -218,7 +206,7 @@
       <section id="galeria" class="content-section gallery-section">
         <div class="section-heading">
           <div>
-            <div class="eyebrow">04 / En acción</div>
+            <div class="eyebrow">05 / En acción</div>
             <h2>Donde las ideas<br /><em>se vuelven piezas.</em></h2>
           </div>
           <p>
@@ -269,81 +257,6 @@
               <p>{{ item.description }}</p>
             </div>
           </article>
-        </div>
-      </section>
-
-      <CatalogoPage embedded />
-
-      <section class="calculator-section">
-        <div class="calculator-intro">
-          <div class="eyebrow">05 / Cotización rápida</div>
-          <h2>¿Tenés una medida?<br /><em>La hacemos realidad.</em></h2>
-          <p>
-            Calculá una referencia inicial y contanos qué necesitás. El valor
-            final se confirma según plano y especificación.
-          </p>
-          <div class="estimate-tag">
-            <CircleCheck :size="17" /> Estimación instantánea
-          </div>
-        </div>
-        <div class="calculator">
-          <div class="calculator-head">
-            <span>Configurá tu pieza</span><span>REF. 2026</span>
-          </div>
-          <label
-            >Material<select v-model="material">
-              <option>Chapa de acero</option>
-              <option>Tubo estructural</option>
-            </select></label
-          >
-          <div class="input-row">
-            <label
-              >Ancho
-              <div class="number-input">
-                <input v-model.number="width" type="number" min="1" /><span
-                  >mm</span
-                >
-              </div></label
-            ><label
-              >Largo
-              <div class="number-input">
-                <input v-model.number="length" type="number" min="1" /><span
-                  >mm</span
-                >
-              </div></label
-            >
-          </div>
-          <div class="input-row">
-            <label
-              >Espesor
-              <div class="number-input">
-                <input v-model.number="thickness" type="number" min="1" /><span
-                  >mm</span
-                >
-              </div></label
-            ><label
-              >Cantidad
-              <div class="number-input">
-                <input v-model.number="quantity" type="number" min="1" /><span
-                  >un.</span
-                >
-              </div></label
-            >
-          </div>
-          <div class="estimate-result">
-            <span>Referencia estimada</span
-            ><strong>{{ formatPrice(calculatorEstimate) }}</strong>
-          </div>
-          <button
-            class="button button-primary full-button"
-            @click="
-              sendWhatsApp(
-                `Hola Kraken, calculé una pieza de ${material}, ${width} x ${length} mm, espesor ${thickness} mm, cantidad ${quantity}.`,
-              )
-            "
-          >
-            Solicitar presupuesto <ArrowUpRight :size="17" />
-          </button>
         </div>
       </section>
 
@@ -399,62 +312,6 @@
       <MessageCircle :size="25" />
     </button>
 
-    <div
-      v-if="quoteCartOpen"
-      class="cart-backdrop"
-      @click.self="quoteCartOpen = false"
-    >
-      <aside class="cart-drawer">
-        <button
-          class="close-button"
-          aria-label="Cerrar carrito"
-          @click="quoteCartOpen = false"
-        >
-          <X :size="18" />
-        </button>
-        <p class="eyebrow">Tu cotización</p>
-        <h2>
-          Cantidad:  <span>{{ quoteItemCount }}</span>
-        </h2>
-        <div v-if="quoteItems.length" class="cart-list">
-          <div v-for="item in quoteItems" :key="item.name" class="cart-item">
-            <div>
-              <strong>{{ item.name }}</strong
-              ><small>{{ formatPrice(item.price) }} c/u</small>
-            </div>
-            <div class="quantity">
-              <button @click="updateQuoteQuantity(item.name, -1)">
-                <Minus :size="13" /></button
-              ><span>{{ item.quantity }}</span
-              ><button @click="updateQuoteQuantity(item.name, 1)">
-                <Plus :size="13" />
-              </button>
-            </div>
-          </div>
-        </div>
-        <div v-else class="cart-empty">
-          <ShoppingCart :size="28" />
-          <p>Tu carrito está vacío.<br />Agregá productos para comenzar.</p>
-        </div>
-        <div class="cart-total">
-          <span>Total estimado</span
-          ><strong>{{ formatPrice(quoteTotal) }}</strong>
-        </div>
-        <button
-          class="send-button"
-          :disabled="!quoteItems.length"
-          @click="sendQuote"
-        >
-          Solicitar cotización <Send :size="16" /></button
-        ><button
-          v-if="quoteItems.length"
-          class="clear-button"
-          @click="clearQuote"
-        >
-          Vaciar carrito
-        </button>
-      </aside>
-    </div>
     <div
       v-if="activeService"
       class="modal-backdrop"
@@ -519,6 +376,7 @@
       </div>
     </div>
   </div>
+  <QuoteCart />
   <NuxtPage />
 </template>
 
@@ -529,13 +387,11 @@ import {
   Check,
   ChevronDown,
   ChevronRight,
-  CircleCheck,
   Factory,
   FileText,
   FlaskConical,
   Gauge,
   Layers3,
-  Menu,
   MessageCircle,
   Minus,
   PackageCheck,
@@ -550,8 +406,6 @@ import {
   X,
   Zap,
 } from "lucide-vue-next";
-import CatalogoPage from "./pages/catalogo.vue";
-
 type Service = {
   name: string;
   category: string;
@@ -768,42 +622,11 @@ const {
   removeFromQuote,
   clearQuote,
 } = useQuoteCart();
-const quoteCartOpen = ref(false);
-const mobileMenuOpen = ref(false);
 const searchQuery = ref("");
-const material = ref("Chapa de acero");
-const width = ref(400);
-const length = ref(800);
-const thickness = ref(2);
-const quantity = ref(10);
 const contactSent = ref(false);
 const contactName = ref("");
 const contactMessage = ref("");
-const hasScrolled = ref(false);
 
-function updateHeaderOnScroll() {
-  hasScrolled.value = window.scrollY > 80;
-}
-
-onMounted(() =>
-  window.addEventListener("scroll", updateHeaderOnScroll, { passive: true }),
-);
-onBeforeUnmount(() =>
-  window.removeEventListener("scroll", updateHeaderOnScroll),
-);
-
-const calculatorEstimate = computed(() =>
-  Math.max(
-    9500,
-    Math.round(
-      width.value *
-        length.value *
-        thickness.value *
-        quantity.value *
-        (material.value === "Tubo estructural" ? 0.0012 : 0.0009),
-    ),
-  ),
-);
 const normalizeSearch = (value: string) =>
   value
     .normalize("NFD")
@@ -888,7 +711,6 @@ function sendWhatsApp(message = createQuotePayload()) {
 
 function sendQuote() {
   sendWhatsApp(createQuotePayload());
-  quoteCartOpen.value = false;
 }
 
 function quoteService(service: Service) {
@@ -1111,6 +933,10 @@ a {
 .site-footer a:hover {
   color: var(--text);
 }
+.nav-featured {
+  color: var(--red-bright) !important;
+  font-weight: 700;
+}
 .header-cta,
 .button {
   display: inline-flex;
@@ -1184,7 +1010,6 @@ a {
 .section-grid,
 .content-section,
 .process-section,
-.calculator-section,
 .contact-section {
   max-width: 1280px;
   margin: auto;
@@ -1421,6 +1246,45 @@ h2 em {
   padding-top: 12px;
   font-size: 9px;
 }
+.hero-product-strip {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  left: 18px;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.hero-product-strip div {
+  position: relative;
+  min-height: 150px;
+  overflow: hidden;
+  border: 1px solid rgba(243, 244, 246, 0.25);
+  background: rgba(15, 15, 18, 0.72);
+}
+.hero-product-strip span {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  color: var(--text);
+  font: 10px "DM Mono";
+  text-transform: uppercase;
+}
+.hero-product-strip img {
+  width: 100%;
+  height: 100%;
+  min-height: 150px;
+  object-fit: cover;
+  opacity: 0.72;
+  filter: saturate(0.7) contrast(1.1);
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+.hero-product-strip div:hover img {
+  opacity: 1;
+  transform: scale(1.06);
+}
 
 .metrics-band {
   display: grid;
@@ -1452,6 +1316,63 @@ h2 em {
   line-height: 1.5;
   text-align: center;
 }
+.home-categories {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0px 5vw 105px;
+}
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.category-card {
+  position: relative;
+  min-height: 280px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+.category-card:hover {
+  border-color: var(--red);
+  transform: translateY(-4px);
+}
+.category-card > img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  opacity: 0.58;
+  filter: saturate(0.75) contrast(1.08);
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+.category-card:hover > img {
+  opacity: 0.82;
+  transform: scale(1.05);
+}
+.category-card > div {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  left: 14px;
+  padding: 18px;
+  background: rgba(15, 15, 18, 0.9);
+}
+.category-card > div > svg { color: var(--red-bright); }
+.category-card h3 {
+  margin: 14px 0 8px;
+  font-size: 24px;
+}
+.category-card span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font: 10px "DM Mono";
+  text-transform: uppercase;
+}
+.category-card span svg { color: var(--red-bright); }
 .content-section {
   padding-top: 125px;
   padding-bottom: 125px;
@@ -1714,51 +1635,6 @@ h2 {
 .full-button {
   width: 100%;
 }
-.calculator-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10vw;
-  align-items: center;
-  max-width: none;
-  padding-top: 110px;
-  padding-bottom: 110px;
-  border-top: 1px solid var(--line);
-  background:
-    linear-gradient(115deg, rgba(220, 38, 38, 0.08), transparent 44%),
-    var(--surface);
-}
-.calculator-intro {
-  max-width: 430px;
-  justify-self: end;
-}
-.calculator-intro p {
-  margin: 25px 0;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.7;
-}
-.estimate-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--red-bright);
-  font: 11px "DM Mono";
-}
-.calculator {
-  width: 100%;
-  max-width: 510px;
-  justify-self: start;
-}
-.calculator-head {
-  color: var(--muted);
-}
-.calculator label {
-  display: block;
-  margin-top: 18px;
-  color: var(--muted);
-  font: 10px "DM Mono";
-  text-transform: uppercase;
-}
 select,
 input,
 textarea {
@@ -1924,7 +1800,6 @@ textarea:focus {
     display: block;
   }
   .hero,
-  .calculator-section,
   .contact-section {
     grid-template-columns: 1fr;
   }
@@ -1936,10 +1811,14 @@ textarea:focus {
   .hero-visual {
     min-height: 370px;
   }
-  .calculator-intro,
-  .calculator {
-    justify-self: stretch;
-    max-width: none;
+  .hero-product-strip {
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+  }
+  .hero-product-strip div,
+  .hero-product-strip img {
+    min-height: 120px;
   }
   .metrics-band {
     grid-template-columns: repeat(2, 1fr);
@@ -1950,6 +1829,9 @@ textarea:focus {
   }
   .service-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .category-grid {
+    grid-template-columns: 1fr;
   }
   .catalog-layout {
     grid-template-columns: 1fr;
@@ -1977,6 +1859,22 @@ textarea:focus {
   .hero-visual {
     min-height: 330px;
   }
+  .hero-product-strip {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    margin: 12px;
+  }
+  .hero-product-strip div,
+  .hero-product-strip img {
+    min-height: 92px;
+  }
+  .hero-product-strip span {
+    top: 7px;
+    left: 7px;
+    font-size: 8px;
+  }
   .machine-block {
     left: 18%;
     transform: scale(0.82) perspective(500px) rotateY(-23deg) rotateX(6deg);
@@ -2001,7 +1899,7 @@ textarea:focus {
   }
   .content-section,
   .process-section,
-  .calculator-section,
+  .home-categories,
   .contact-section {
     padding-top: 80px;
     padding-bottom: 80px;

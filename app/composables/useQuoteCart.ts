@@ -6,6 +6,7 @@ export type QuoteItem = {
 };
 
 export function useQuoteCart() {
+  const quoteCartOpen = useState("kraken-quote-cart-open", () => false);
   const quoteItems = useCookie<QuoteItem[]>("kraken-quote-items", {
     default: () => [],
     watch: "shallow",
@@ -20,17 +21,18 @@ export function useQuoteCart() {
     quoteItems.value.reduce((total, item) => total + item.quantity, 0),
   );
 
-  function addToQuote(product: Omit<QuoteItem, "quantity">) {
+  function addToQuote(product: Omit<QuoteItem, "quantity">, quantity = 1) {
     const existing = quoteItems.value.find(
       (item) => item.name === product.name,
     );
     quoteItems.value = existing
       ? quoteItems.value.map((item) =>
           item.name === product.name
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: item.quantity + quantity }
             : item,
         )
-      : [...quoteItems.value, { ...product, quantity: 1 }];
+      : [...quoteItems.value, { ...product, quantity }];
+    quoteCartOpen.value = true;
   }
 
   function updateQuoteQuantity(name: string, change: number) {
@@ -52,6 +54,14 @@ export function useQuoteCart() {
     quoteItems.value = [];
   }
 
+  function openQuoteCart() {
+    quoteCartOpen.value = true;
+  }
+
+  function closeQuoteCart() {
+    quoteCartOpen.value = false;
+  }
+
   return {
     quoteItems,
     quoteTotal,
@@ -60,5 +70,8 @@ export function useQuoteCart() {
     updateQuoteQuantity,
     removeFromQuote,
     clearQuote,
+    quoteCartOpen,
+    openQuoteCart,
+    closeQuoteCart,
   };
 }

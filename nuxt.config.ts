@@ -3,6 +3,10 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: false },
   modules: ['@nuxtjs/tailwindcss'],
+  runtimeConfig: {
+    adminEmail: '',
+    adminPassword: '',
+  },
   app: {
     head: {
       title: 'Kraken | Soluciones Industriales',
@@ -13,7 +17,7 @@ export default defineNuxtConfig({
       ],
       link: [
        
-        { rel: 'icon', type: 'image/png', href: 'public/img/iconkraken.png' }
+        { rel: 'icon', type: 'image/png', href: '/img/iconkraken.png' }
         
       ]
     }
