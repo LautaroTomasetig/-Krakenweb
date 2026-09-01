@@ -1,8 +1,7 @@
 import { createError, readBody } from "h3";
 import { products, type CatalogProduct } from "../../../../data/products";
 import { requireAdmin } from "../../../utils/require-admin";
-import { loadProducts, persistProducts } from "../../../utils/product-store";
-import { DEFAULT_PRODUCT_IMAGE } from "../../../utils/product-store";
+import { loadProducts, updateProduct } from "../../../utils/product-store";
 
 export default defineEventHandler(async (event) => {
   requireAdmin(event);
@@ -14,8 +13,11 @@ export default defineEventHandler(async (event) => {
   const priceFrom = body.priceFrom ?? products[index].priceFrom;
   const priceTo = body.priceTo ?? products[index].priceTo;
   if (priceFrom < 0 || priceTo < priceFrom) throw createError({ statusCode: 400, statusMessage: "Precios inválidos" });
-  products[index] = { ...products[index], ...body, category: body.category ? normalizeCategory(String(body.category)) : products[index].category, price: body.priceFrom ?? products[index].price, image: DEFAULT_PRODUCT_IMAGE, images: [DEFAULT_PRODUCT_IMAGE], icon: products[index].icon };
-  await persistProducts();
+  const previousSlug = event.context.params?.slug!;
+  const selectedImages = body.images?.filter(Boolean).slice(0, 4);
+  const images = selectedImages?.length ? selectedImages : products[index].images;
+  products[index] = { ...products[index], ...body, category: body.category ? normalizeCategory(String(body.category)) : products[index].category, price: body.priceFrom ?? products[index].price, image: body.image || images[0] || products[index].image, images, icon: products[index].icon };
+  await updateProduct(previousSlug, products[index]);
   return products[index];
 });
 
