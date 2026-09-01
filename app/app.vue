@@ -62,7 +62,7 @@
         </div>
         <div class="category-grid">
           <NuxtLink class="category-card" to="/catalogo?categoria=racks">
-            <img src="/img/moldes.JPG" alt="Racks metálicos industriales" />
+            <img src="/img/racks.JPG" alt="Racks metálicos industriales" />
             <div><Box :size="20" /><h3>Racks</h3><span>Alta resistencia · modular <ArrowUpRight :size="16" /></span></div>
           </NuxtLink>
           <a class="category-card" href="#servicios">
