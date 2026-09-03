@@ -2,7 +2,10 @@
   <main class="admin-page">
     <header class="admin-toolbar">
       <div><p class="eyebrow">Administracion / Productos</p><h1>Catalogo <em>editable.</em></h1></div>
-      <div class="toolbar-actions"><NuxtLink class="button button-ghost" to="/">Ver sitio</NuxtLink><button class="button button-primary" @click="startNew">Nuevo producto <Plus :size="16" /></button><button class="icon-button" aria-label="Cerrar sesion" @click="logout"><LogOut :size="17" /></button></div>
+      <div class="toolbar-actions">
+        <NuxtLink class="button button-ghost" to="/">Ver sitio</NuxtLink>
+        <button class="button button-primary" @click="startNew">Nuevo producto <Plus :size="16" /></button>
+        <button class="icon-button" aria-label="Cerrar sesion" @click="logout"><LogOut :size="17" /></button></div>
     </header>
     <section class="admin-content">
       <div class="admin-list"><div class="list-heading"><p class="eyebrow">Productos cargados</p><strong>{{ productList.length }}</strong></div><p v-if="loadError" class="list-message error">No se pudo cargar la lista. Volvé a iniciar sesión.</p><p v-else-if="!productList.length" class="list-message">No hay productos cargados.</p><div v-for="product in productList" :key="product.slug" class="admin-product"><img :src="product.image" :alt="product.name" /><div><small>{{ product.code }} · {{ product.category }}</small><h2>{{ product.name }}</h2><p>{{ product.priceFrom ? `${format(product.priceFrom)} - ${format(product.priceTo)}` : "A cotizar" }} + IVA</p></div><div class="row-actions"><button class="icon-button" aria-label="Editar producto" @click="edit(product)"><Pencil :size="16" /></button><button class="icon-button danger" aria-label="Eliminar producto" @click="remove(product.slug)"><Trash2 :size="16" /></button></div></div></div>

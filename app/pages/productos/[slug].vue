@@ -16,7 +16,7 @@
           <div class="purchase-actions"><div class="quantity"><button aria-label="Reducir cantidad" @click="quantity = Math.max(1, quantity - 1)"><Minus :size="15" /></button><span>{{ quantity }}</span><button aria-label="Aumentar cantidad" @click="quantity++"><Plus :size="15" /></button></div><button class="button button-primary" @click="addProduct">Agregar al carrito <ShoppingCart :size="17" /></button><button class="button button-dark" @click="requestQuote">Comprar ahora <ArrowUpRight :size="17" /></button></div>
         </section>
       </div>
-      <section class="description-section"><p class="eyebrow">Descripción técnica</p><h2>Diseñado para <em>trabajar.</em></h2><p>{{ product.technicalDescription }}</p></section>
+      <section class="description-section"><h2>Descripción:</h2><p>{{ product.technicalDescription }}</p></section>
     </main>
   </div>
   <main v-else class="not-found"><h1>Producto no encontrado</h1><NuxtLink to="/catalogo" class="button button-primary">Ver catálogo</NuxtLink></main>
