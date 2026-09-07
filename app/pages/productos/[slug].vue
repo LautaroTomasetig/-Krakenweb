@@ -12,7 +12,7 @@
           <p class="eyebrow">{{ product.code }} / {{ product.description }}</p>
           <h1>{{ product.name }}</h1>
           <p class="price-range">{{ formatRange(product) }}</p>
-          <div v-if="product.rackConfig" class="rack-config"><p class="eyebrow">Cotización de rack</p><p class="config-copy">Elegí una medida para actualizar el rango de precio en tiempo real.</p><div class="calculator"><div class="calculator-head"><span>Configuración</span><span>REF. 2026</span></div><div class="select-row"><label>Alto<select v-model.number="height"><option v-for="value in heights" :key="value" :value="value">{{ value }} mm</option></select></label><label>Largo<select v-model.number="width"><option v-for="value in widths" :key="value" :value="value">{{ value }} mm</option></select></label><label>Profundidad<select v-model.number="depth"><option v-for="value in depths" :key="value" :value="value">{{ value }} mm</option></select></label><label>Niveles<select v-model.number="levels"><option v-for="value in levelOptions" :key="value" :value="value">{{ value }}</option></select></label><label>Resistencia por nivel<select v-model.number="load"><option v-for="value in loads" :key="value" :value="value">{{ value }} kg</option></select></label></div><div class="estimate-result"><span>Rango estimado + IVA</span><strong>{{ calculatedRange }}</strong></div></div></div>
+          <div v-if="isRack" class="rack-config"><p class="eyebrow">Cotización de rack</p><p class="config-copy">Elegí una medida para actualizar el rango de precio en tiempo real.</p><div class="calculator"><div class="calculator-head"><span>Configuración</span><span>REF. 2026</span></div><div class="select-row"><label>Alto<select v-model.number="height"><option v-for="value in heights" :key="value" :value="value">{{ value }} mm</option></select></label><label>Largo<select v-model.number="width"><option v-for="value in widths" :key="value" :value="value">{{ value }} mm</option></select></label><label>Profundidad<select v-model.number="depth"><option v-for="value in depths" :key="value" :value="value">{{ value }} mm</option></select></label><label>Niveles<select v-model.number="levels"><option v-for="value in levelOptions" :key="value" :value="value">{{ value }}</option></select></label><label>Resistencia por nivel<select v-model.number="load"><option v-for="value in loads" :key="value" :value="value">{{ value }} kg</option></select></label></div><div class="estimate-result"><span>Rango estimado + IVA</span><strong>{{ calculatedRange }}</strong></div></div></div>
           <div class="purchase-actions"><div class="quantity"><button aria-label="Reducir cantidad" @click="quantity = Math.max(1, quantity - 1)"><Minus :size="15" /></button><span>{{ quantity }}</span><button aria-label="Aumentar cantidad" @click="quantity++"><Plus :size="15" /></button></div><button class="button button-primary" @click="addProduct">Agregar al carrito <ShoppingCart :size="17" /></button><button class="button button-dark" @click="requestQuote">Comprar ahora <ArrowUpRight :size="17" /></button></div>
         </section>
       </div>
@@ -24,7 +24,32 @@
 <script setup lang="ts">
 import { ArrowUpRight, ChevronRight, Minus, Plus, ShoppingCart } from "lucide-vue-next";
 import type { CatalogProduct } from "../../../data/products";
-const route = useRoute(); const { data: productData } = await useFetch<CatalogProduct[]>("/api/products"); const product = computed(() => productData.value?.find((item) => item.slug === route.params.slug)); const activeImage = ref(""); const quantity = ref(1); const { addToQuote } = useQuoteCart(); const config = computed(() => product.value?.rackConfig); const widths = [1200, 1500, 1800, 2000, 2400, 2700, 3000]; const heights = [1200, 1500, 1800, 2000, 2400, 3000, 3600, 4500]; const depths = [600, 800, 1000, 1100, 1200]; const levelOptions = [2, 3, 4, 5, 6, 8]; const loads = [200, 400, 600, 800, 1000, 1200]; const width = ref(widths[3]); const height = ref(heights[3]); const depth = ref(depths[2]); const levels = ref(levelOptions[1]); const load = ref(loads[2]); watchEffect(() => { if (config.value) { width.value = config.value.width; height.value = config.value.height; depth.value = config.value.depth; levels.value = config.value.levels; } }); const formatPrice = (value: number) => `$ ${value.toLocaleString("es-AR")}`; const formatRange = (item: CatalogProduct) => item.priceFrom ? `${formatPrice(item.priceFrom)} - ${formatPrice(item.priceTo)} + IVA` : "A cotizar + IVA"; const calculatedRange = computed(() => { if (!product.value?.rackConfig) return "A cotizar"; const base = product.value.rackConfig; const factor = Math.max(.65, (width.value / base.width) * (height.value / base.height) * (depth.value / base.depth) * (levels.value / base.levels) * Math.max(.7, load.value / 600)); return `${formatPrice(Math.round(product.value.priceFrom * factor))} - ${formatPrice(Math.round(product.value.priceTo * factor))}`; }); function addProduct() { if (product.value) addToQuote({ name: product.value.name, price: product.value.priceFrom, details: product.value.description }, quantity.value); } function requestQuote() { if (!product.value) return; const detail = product.value.rackConfig ? `Configuración: ${width.value} x ${height.value} x ${depth.value} mm, ${levels.value} niveles, ${load.value} kg por nivel, cantidad ${quantity.value}` : `Cantidad: ${quantity.value}`; window.open(`https://wa.me/5491131250453?text=${encodeURIComponent(`Hola! Quisiera cotizar ${product.value.name}. ${detail}`)}`, "_blank"); }
+
+const DEFAULT_RACK_CONFIG = { width: 2000, height: 2000, depth: 1000, levels: 3 };
+const route = useRoute();
+const { data: productData } = await useFetch<CatalogProduct[]>("/api/products");
+const product = computed(() => productData.value?.find((item) => item.slug === route.params.slug));
+const isRack = computed(() => product.value?.category.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim() === "racks metalicos");
+const activeImage = ref("");
+const quantity = ref(1);
+const { addToQuote } = useQuoteCart();
+const config = computed(() => product.value?.rackConfig || DEFAULT_RACK_CONFIG);
+const widths = [1200, 1500, 1800, 2000, 2400, 2700, 3000];
+const heights = [1200, 1500, 1800, 2000, 2400, 3000, 3600, 4500];
+const depths = [600, 800, 1000, 1100, 1200];
+const levelOptions = [2, 3, 4, 5, 6, 8];
+const loads = [200, 400, 600, 800, 1000, 1200];
+const width = ref(widths[3]); const height = ref(heights[3]); const depth = ref(depths[2]); const levels = ref(levelOptions[1]); const load = ref(loads[2]);
+watchEffect(() => { const base = config.value; width.value = base.width; height.value = base.height; depth.value = base.depth; levels.value = base.levels; });
+const formatPrice = (value: number) => `$ ${value.toLocaleString("es-AR")}`;
+const formatRange = (item: CatalogProduct) => item.priceFrom ? `${formatPrice(item.priceFrom)} - ${formatPrice(item.priceTo)} + IVA` : "A cotizar + IVA";
+const calculationFactor = computed(() => Math.max(.65, (width.value / config.value.width) * (height.value / config.value.height) * (depth.value / config.value.depth) * (levels.value / config.value.levels) * Math.max(.7, load.value / 600)));
+const calculatedPriceFrom = computed(() => product.value ? Math.round(product.value.priceFrom * calculationFactor.value) : 0);
+const calculatedPriceTo = computed(() => product.value ? Math.round(product.value.priceTo * calculationFactor.value) : 0);
+const calculatedRange = computed(() => isRack.value && product.value ? `${formatPrice(calculatedPriceFrom.value)} - ${formatPrice(calculatedPriceTo.value)}` : "A cotizar");
+const configurationDetails = computed(() => `Configuración: ${width.value} x ${height.value} x ${depth.value} mm, ${levels.value} niveles, ${load.value} kg por nivel`);
+function addProduct() { if (product.value) addToQuote({ name: product.value.name, price: isRack.value ? calculatedPriceFrom.value : product.value.priceFrom, details: isRack.value ? configurationDetails.value : product.value.description }, quantity.value); }
+function requestQuote() { if (!product.value) return; const detail = isRack.value ? `${configurationDetails.value}, cantidad ${quantity.value}` : `Cantidad: ${quantity.value}`; window.open(`https://wa.me/5491131250453?text=${encodeURIComponent(`Hola! Quisiera cotizar ${product.value.name}. ${detail}`)}`, "_blank"); }
 useHead(() => ({ title: product.value ? `${product.value.name} | Kraken` : "Producto | Kraken" }));
 </script>
 <style scoped>

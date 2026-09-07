@@ -23,11 +23,11 @@ export function useQuoteCart() {
 
   function addToQuote(product: Omit<QuoteItem, "quantity">, quantity = 1) {
     const existing = quoteItems.value.find(
-      (item) => item.name === product.name,
+      (item) => item.name === product.name && item.details === product.details,
     );
     quoteItems.value = existing
       ? quoteItems.value.map((item) =>
-          item.name === product.name
+          item.name === product.name && item.details === product.details
             ? { ...item, quantity: item.quantity + quantity }
             : item,
         )
@@ -35,11 +35,11 @@ export function useQuoteCart() {
     quoteCartOpen.value = true;
   }
 
-  function updateQuoteQuantity(name: string, change: number) {
-    const item = quoteItems.value.find((quoteItem) => quoteItem.name === name);
+  function updateQuoteQuantity(name: string, change: number, details?: string) {
+    const item = quoteItems.value.find((quoteItem) => quoteItem.name === name && quoteItem.details === details);
     if (item) {
       quoteItems.value = quoteItems.value.map((quoteItem) =>
-        quoteItem.name === name
+        quoteItem.name === name && quoteItem.details === details
           ? { ...quoteItem, quantity: Math.max(1, quoteItem.quantity + change) }
           : quoteItem,
       );

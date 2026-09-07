@@ -16,12 +16,19 @@ export default defineEventHandler(async (event) => {
   const previousSlug = event.context.params?.slug!;
   const selectedImages = body.images?.filter(Boolean).slice(0, 4);
   const images = selectedImages?.length ? selectedImages : products[index].images;
-  products[index] = { ...products[index], ...body, category: body.category ? normalizeCategory(String(body.category)) : products[index].category, price: body.priceFrom ?? products[index].price, image: body.image || images[0] || products[index].image, images, icon: products[index].icon };
+  const category = body.category ? normalizeCategory(String(body.category)) : products[index].category;
+  products[index] = { ...products[index], ...body, category, price: body.priceFrom ?? products[index].price, image: body.image || images[0] || products[index].image, images, rackConfig: isRackCategory(category) ? body.rackConfig || products[index].rackConfig || DEFAULT_RACK_CONFIG : undefined, icon: products[index].icon };
+  if (!isRackCategory(category)) delete products[index].rackConfig;
   await updateProduct(previousSlug, products[index]);
   return products[index];
 });
 
 function normalizeCategory(category: string) {
-  const normalized = category.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const normalized = category.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
   return normalized === "racks metalicos" ? "Racks metálicos" : normalized === "estanterias metalicas" ? "Estanterías metálicas" : normalized === "gondolas" ? "Góndolas" : "Soluciones especiales";
+}
+
+const DEFAULT_RACK_CONFIG = { width: 2000, height: 2000, depth: 1000, levels: 3 };
+function isRackCategory(category: string) {
+  return category.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim() === "racks metalicos";
 }

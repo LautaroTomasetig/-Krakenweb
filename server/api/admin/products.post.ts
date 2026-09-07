@@ -16,13 +16,19 @@ export default defineEventHandler(async (event) => {
   if (priceFrom < 0 || priceTo < priceFrom) throw createError({ statusCode: 400, statusMessage: "Precios inválidos" });
   const selectedImages = body.images?.filter(Boolean).slice(0, 4);
   const images = selectedImages?.length ? selectedImages : (body.image ? [body.image] : [DEFAULT_PRODUCT_IMAGE]);
-  const product = { ...body, category, price: priceFrom, priceFrom, priceTo, image: body.image || images[0], images, icon: products[0]?.icon || Box } as CatalogProduct;
+  const product = { ...body, category, price: priceFrom, priceFrom, priceTo, image: body.image || images[0], images, rackConfig: isRackCategory(category) ? body.rackConfig || DEFAULT_RACK_CONFIG : undefined, icon: products[0]?.icon || Box } as CatalogProduct;
+  if (!isRackCategory(category)) delete product.rackConfig;
   products.push(product);
   await createProduct(product);
   return product;
 });
 
 function normalizeCategory(category: string) {
-  const normalized = category.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const normalized = category.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
   return normalized === "racks metalicos" ? "Racks metálicos" : normalized === "estanterias metalicas" ? "Estanterías metálicas" : normalized === "gondolas" ? "Góndolas" : "Soluciones especiales";
+}
+
+const DEFAULT_RACK_CONFIG = { width: 2000, height: 2000, depth: 1000, levels: 3 };
+function isRackCategory(category: string) {
+  return category.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim() === "racks metalicos";
 }

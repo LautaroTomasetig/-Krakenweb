@@ -564,7 +564,7 @@ const services: Service[] = [
   },
 ];
 
-const galleryItems: GalleryItem[] = [
+const galleryItems = ref<GalleryItem[]>([
   {
     number: "01",
     title: "La precisión en marcha",
@@ -610,7 +610,16 @@ const galleryItems: GalleryItem[] = [
     alt: "Detalle de producción industrial Kraken Group",
     position: "center 65%",
   },
-];
+]);
+
+onMounted(async () => {
+  try {
+    const savedGallery = await $fetch<GalleryItem[]>("/api/gallery");
+    if (savedGallery?.length) galleryItems.value = savedGallery;
+  } catch {
+    // La portada conserva la galería incluida en el sitio si el servicio no está disponible.
+  }
+});
 
 const activeService = ref<Service | null>(null);
 const activeGalleryItem = ref<GalleryItem | null>(null);
