@@ -1453,17 +1453,17 @@ h2 {
   color: var(--red);
 }
 .process-section {
-  max-width: none;
+  position: relative;
   padding-top: 100px;
   padding-bottom: 110px;
   background: var(--surface);
+  box-shadow: 0 0 0 100vmax var(--surface);
+  clip-path: inset(0 -100vmax);
 }
 .process-section > h2,
 .process-section > .eyebrow,
 .process-grid {
-  max-width: 1180px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: none;
 }
 .process-grid {
   display: grid;
