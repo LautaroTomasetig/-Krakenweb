@@ -244,10 +244,7 @@
                 :alt="item.alt"
                 loading="lazy"
                 :style="{ objectPosition: item.position || 'center' }"
-              /><span class="gallery-kind">{{
-                item.type === "video" ? "Video" : "Registro"
-              }}</span
-              ><span class="gallery-open"
+              /><span class="gallery-open"
                 >Ver detalle <ArrowUpRight :size="14"
               /></span>
             </div>
