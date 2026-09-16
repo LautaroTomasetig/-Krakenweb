@@ -159,7 +159,19 @@
             :key="service.name"
             class="service-card"
             @click="activeService = service"
+            @mouseenter="playServiceVideo"
+            @mouseleave="stopServiceVideo"
           >
+            <span v-if="service.video" class="service-video" aria-hidden="true">
+              <video
+                :src="service.video"
+                muted
+                loop
+                playsinline
+                preload="auto"
+                tabindex="-1"
+              />
+            </span>
             <span class="service-index">{{
               String(index + 1).padStart(2, "0")
             }}</span>
@@ -309,12 +321,16 @@
       <MessageCircle :size="25" />
     </button>
 
+    <Transition name="service-modal-fade">
     <div
       v-if="activeService"
       class="modal-backdrop"
       @click.self="activeService = null"
     >
-      <div class="service-modal">
+      <div
+        class="service-modal"
+        :class="{ 'service-modal-with-video': activeService.video }"
+      >
         <button
           class="modal-close"
           aria-label="Cerrar"
@@ -326,19 +342,33 @@
         <component :is="activeService.icon" :size="35" stroke-width="1.3" />
         <h2>{{ activeService.name }}</h2>
         <p>{{ activeService.detail }}</p>
+        <video
+          v-if="activeService.video"
+          class="service-modal-video"
+          :src="activeService.video"
+          :aria-label="`Video de ${activeService.name}`"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+        />
         <ul class="spec-list">
           <li v-for="spec in serviceSpecs(activeService)" :key="spec">
             <Check :size="15" /> {{ spec }}
           </li>
         </ul>
-        <button
-          class="button button-primary"
-          @click="quoteService(activeService)"
-        >
-          Solicitar cotización <ArrowUpRight :size="17" />
-        </button>
+        <div class="service-modal-actions">
+          <button
+            class="button button-primary"
+            @click="quoteService(activeService)"
+          >
+            Solicitar cotización <ArrowUpRight :size="17" />
+          </button>
+        </div>
       </div>
     </div>
+    </Transition>
     <div
       v-if="activeGalleryItem"
       class="modal-backdrop gallery-lightbox"
@@ -408,6 +438,7 @@ type Service = {
   category: string;
   detail: string;
   icon: typeof Zap;
+  video?: string;
 };
 type QuoteItem = {
   name: string;
@@ -441,6 +472,8 @@ const services: Service[] = [
     detail:
       "Corte de chapa de precisión para series cortas, medias y producción continua.",
     icon: Zap,
+    video: "/img/corteporlaser.mp4",
+    // video: "/videos/servicios/corteporlaser.mp4",
   },
   {
     name: "Fresado CNC",
@@ -448,6 +481,7 @@ const services: Service[] = [
     detail:
       "Geometrías complejas y tolerancias estrictas en múltiples materiales.",
     icon: Settings2,
+    video: "/img/fresadocnc.mp4",
   },
   {
     name: "Plegado",
@@ -455,18 +489,21 @@ const services: Service[] = [
     detail:
       "Plegado CNC de hasta 3 metros para prototipos y estructuras repetibles.",
     icon: Layers3,
+    video: "/img/Plegado.mp4",
   },
   {
     name: "Inyección de plástico",
     category: "Polímeros",
     detail: "Componentes técnicos con matrices optimizadas para cada volumen.",
     icon: FlaskConical,
+    video: "/img/inyecciondeplastico.mp4",
   },
   {
     name: "Soldadura láser",
     category: "Unión",
     detail: "Uniones limpias, rápidas y con mínima distorsión térmica.",
     icon: Gauge,
+    video: "/img/soldaduralaser.mp4",
   },
   {
     name: "Soldadura robotizada",
@@ -619,6 +656,17 @@ onMounted(async () => {
 });
 
 const activeService = ref<Service | null>(null);
+function playServiceVideo(event: MouseEvent) {
+  const video = (event.currentTarget as HTMLElement).querySelector("video");
+  if (!video) return;
+  video.muted = true;
+  void video.play().catch(() => {});
+}
+
+function stopServiceVideo(event: MouseEvent) {
+  (event.currentTarget as HTMLElement).querySelector("video")?.pause();
+}
+
 const activeGalleryItem = ref<GalleryItem | null>(null);
 const {
   quoteItems,
@@ -1432,6 +1480,33 @@ h2 {
   box-shadow: inset 0 0 0 1px var(--red);
   transform: translateY(-2px);
 }
+#servicios .service-card {
+  isolation: isolate;
+}
+#servicios .service-video {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+#servicios .service-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+#servicios .service-video::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  box-shadow: inset 0 0 0 1px var(--red);
+}
+#servicios .service-card:hover .service-video {
+  opacity: 1;
+}
 .service-index {
   position: absolute;
   top: 20px;
@@ -1771,6 +1846,22 @@ textarea:focus {
   background: rgba(5, 5, 7, 0.8);
   backdrop-filter: blur(8px);
 }
+.service-modal-fade-enter-active,
+.service-modal-fade-leave-active {
+  transition: opacity 250ms ease;
+}
+.service-modal-fade-enter-active .service-modal,
+.service-modal-fade-leave-active .service-modal {
+  transition: transform 250ms ease;
+}
+.service-modal-fade-enter-from,
+.service-modal-fade-leave-to {
+  opacity: 0;
+}
+.service-modal-fade-enter-from .service-modal,
+.service-modal-fade-leave-to .service-modal {
+  transform: scale(0.98);
+}
 .service-modal {
   position: relative;
   width: min(490px, 100%);
@@ -1778,6 +1869,28 @@ textarea:focus {
   border: 1px solid var(--red);
   background: var(--surface);
   box-shadow: 0 0 60px rgba(220, 38, 38, 0.15);
+}
+.service-modal,
+.service-modal-with-video {
+  max-height: calc(100vh - 48px);
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+}
+.service-modal-actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  margin: -16px 0;
+  padding: 16px 0;
+  background: var(--surface);
+}
+.service-modal-video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  margin-bottom: 28px;
+  border: 1px solid var(--line);
 }
 .service-modal > svg {
   margin: 34px 0 20px;
