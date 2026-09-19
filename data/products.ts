@@ -2,6 +2,10 @@ import { Box, Layers3, Ruler, Settings2 } from "lucide-vue-next";
 
 export type CatalogProduct = {
   id?: string;
+  priceBase?: number;
+  markupPercent?: number;
+  categoryId?: string;
+  isRack?: boolean;
   slug: string;
   name: string;
   code: string;

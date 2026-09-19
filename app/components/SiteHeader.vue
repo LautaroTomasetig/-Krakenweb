@@ -1,7 +1,7 @@
 <template>
   <header class="site-header" :class="{ 'site-header-scrolled': hasScrolled }">
-    <NuxtLink class="brand" to="/" aria-label="Kraken Group inicio">
-      <img src="/img/logo-kraken.png" alt="Kraken Group Logo" class="brand-logo" />
+    <NuxtLink class="brand" to="/" aria-label="Kraken inicio">
+      <img src="/img/logo-kraken.png" alt="Kraken Logo" class="brand-logo" />
     </NuxtLink>
     <nav class="desktop-nav" aria-label="Navegación principal">
       <NuxtLink class="nav-featured" to="/catalogo?categoria=racks">RACKS</NuxtLink>

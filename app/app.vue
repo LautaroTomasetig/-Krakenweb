@@ -79,7 +79,7 @@
 
       <section class="metrics-band">
         <div>
-          <span>01</span><strong>Una planta.<br />21 servicios.</strong>
+          <span>01</span><strong>Una planta.<br />22 servicios.</strong>
         </div>
         <div>
           <span>02</span><strong>Del plano<br />a la pieza.</strong>
@@ -304,10 +304,10 @@
     </main>
 
     <footer class="site-footer">
-      <a class="brand" href="#inicio" aria-label="Kraken Group inicio">
+      <a class="brand" href="#inicio" aria-label="Kraken inicio">
         <img
           src="/img/logo-kraken.png"
-          alt="Kraken Group Logo"
+          alt="Kraken Logo"
           class="brand-logo"
         /> </a
       ><span>© 2026 Kraken.</span
@@ -465,6 +465,7 @@ const services: Service[] = [
     detail:
       "Acabados resistentes y uniformes para piezas industriales de alto tránsito.",
     icon: Sparkles,
+    video: "/img/pinturaenpolvo.mp4",
   },
   {
     name: "Corte por láser",
@@ -492,6 +493,13 @@ const services: Service[] = [
     video: "/img/Plegado.mp4",
   },
   {
+    name: "Panelado",
+    category: "Corte & conformado",
+    detail: "Conformado de paneles de chapa según las necesidades de cada proyecto.",
+    icon: Layers3,
+    video: "/img/panelado.mp4",
+  },
+  {
     name: "Inyección de plástico",
     category: "Polímeros",
     detail: "Componentes técnicos con matrices optimizadas para cada volumen.",
@@ -510,6 +518,7 @@ const services: Service[] = [
     category: "Unión",
     detail: "Celdas automatizadas para consistencia y velocidad de producción.",
     icon: Factory,
+    video: "/img/soldadurarobot.mp4",
   },
   {
     name: "Limpieza láser",
@@ -522,6 +531,7 @@ const services: Service[] = [
     category: "Mecanizado",
     detail: "Cavidades y cortes de alta precisión en aceros templados.",
     icon: Ruler,
+    video: "/img/electroerosion.mp4",
   },
   {
     name: "Centro de mecanizado",
@@ -534,6 +544,7 @@ const services: Service[] = [
     category: "Mecanizado",
     detail: "Piezas torneadas bajo plano y componentes de reposición.",
     icon: Gauge,
+    video: "/img/torneria.mp4",
   },
   {
     name: "Corte por hilo",
@@ -552,30 +563,35 @@ const services: Service[] = [
     category: "Corte & conformado",
     detail: "Curvado repetible para estructuras, mobiliario y conducción.",
     icon: Layers3,
+    video: "/img/dobladoradecanios.mp4",
   },
   {
     name: "Racks y estanterías industriales",
     category: "Soluciones",
     detail: "Almacenamiento modular diseñado alrededor de tu operación.",
     icon: Box,
+    video: "/img/estanteriasracks.mp4",
   },
   {
     name: "Impresión 3D",
     category: "Prototipado",
     detail: "Validación funcional rápida antes de pasar a producción.",
     icon: Sparkles,
+    video: "/img/3d.mp4",
   },
   {
     name: "Matrices de estampado",
     category: "Herramental",
     detail: "Diseño y fabricación de matrices para ciclos de alta exigencia.",
     icon: Settings2,
+    video: "/img/matricesdeestampado.mp4",
   },
   {
     name: "Punzonado",
     category: "Corte & conformado",
     detail: "Perforaciones y formas repetibles con eficiencia industrial.",
     icon: Ruler,
+    video: "/img/punzonado.mp4",
   },
   {
     name: "Escaneo 3D",
@@ -588,6 +604,7 @@ const services: Service[] = [
     category: "Automatización",
     detail: "Control industrial, puesta en marcha y mejora de procesos.",
     icon: Factory,
+    video: "/img/tablerosplc.mp4",
   },
   {
     name: "Estampado en prensas 140 TN",
@@ -614,7 +631,7 @@ const galleryItems = ref<GalleryItem[]>([
     description: "Experiencia técnica detrás de cada terminación.",
     type: "image",
     src: "/img/pintura.jpg",
-    alt: "Interior de la planta industrial Kraken Group",
+    alt: "Interior de la planta industrial Kraken ",
     position: "35% center",
   },
   {
@@ -632,7 +649,7 @@ const galleryItems = ref<GalleryItem[]>([
     description: "Personas y procesos alineados para producir mejor.",
     type: "image",
     src: "/img/equipo.jpg",
-    alt: "Planta y maquinaria industrial Kraken Group",
+    alt: "Planta y maquinaria industrial Kraken ",
     position: "72% center",
   },
   {
@@ -641,7 +658,7 @@ const galleryItems = ref<GalleryItem[]>([
     description: "El resultado final preparado para entrar en operación.",
     type: "image",
     src: "/img/final.jpg",
-    alt: "Detalle de producción industrial Kraken Group",
+    alt: "Detalle de producción industrial Kraken",
     position: "center 65%",
   },
 ]);
@@ -815,7 +832,7 @@ useHead({
   background: none;
   border: none;
   color: var(--red);
-  font-size: 15px;
+  font-size: 16px;
   margin-top: 15px;
   cursor: pointer;
 }
@@ -825,7 +842,7 @@ useHead({
   border: none;
   color: var(--red-bright);
   
-  font-size: 15px;
+  font-size: 16px;
   cursor: pointer;
 }
 /* Cambia el color de la X nativa del input search */
@@ -853,7 +870,7 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   --surface: #18191e;
   --line: #2a2d34;
   --text: #f3f4f6;
-  --muted: #9ca3af;
+  --muted: #c1c6ce;
   --red: #dc2626;
   --red-bright: #ef4444;
 }
@@ -934,7 +951,7 @@ a {
   gap: 10px;
   font-weight: 700;
   letter-spacing: 0.08em;
-  font-size: 13px;
+  font-size: 15px;
 }
 .brand i {
   color: var(--muted);
@@ -956,7 +973,7 @@ a {
   display: flex;
   gap: 31px;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 15px;
 }
 .desktop-nav a,
 .mobile-nav a {
@@ -1005,7 +1022,7 @@ a {
 .header-cta {
   background: transparent;
   color: var(--text);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
 }
 .header-cta:hover {
@@ -1037,10 +1054,10 @@ a {
   height: 18px;
   padding: 0 4px;
   place-items: center;
-  color: var(--text);
+  color: #fff;
   border-radius: 50%;
   background: var(--red);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   line-height: 1;
 }
@@ -1085,7 +1102,7 @@ a {
   gap: 10px;
   color: var(--red-bright);
   font:
-    500 11px "DM Mono",
+    500 13px "DM Mono",
     monospace;
   letter-spacing: 0.11em;
   text-transform: uppercase;
@@ -1131,10 +1148,11 @@ h2 em {
   min-height: 48px;
   padding: 0 20px;
   color: var(--text);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
 }
 .button-primary {
+  color: #fff;
   background: var(--red);
   box-shadow: 0 0 25px rgba(220, 38, 38, 0.2);
 }
@@ -1157,7 +1175,7 @@ h2 em {
   gap: 24px;
   color: var(--muted);
   font:
-    10px "DM Mono",
+    13px "DM Mono",
     monospace;
   text-transform: uppercase;
 }
@@ -1257,7 +1275,7 @@ h2 em {
 .coordinate,
 .visual-caption {
   font:
-    10px "DM Mono",
+    13px "DM Mono",
     monospace;
   letter-spacing: 0.08em;
 }
@@ -1298,7 +1316,20 @@ h2 em {
   color: var(--muted);
   border-top: 1px solid var(--line);
   padding-top: 12px;
-  font-size: 9px;
+  font-size: 13px;
+}
+.visual-caption > span:last-child {
+  min-width: 0;
+  max-width: calc(100% - 70px);
+  margin-right: clamp(0px, 1vw, 8px);
+  font-size: clamp(11px, 2.8vw, 13px);
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+@media (min-width: 851px) {
+  .visual-caption > span:last-child {
+    margin-right: max(0px, calc(920px - 55vw));
+  }
 }
 .hero-product-strip {
   position: absolute;
@@ -1323,7 +1354,7 @@ h2 em {
   left: 10px;
   z-index: 1;
   color: var(--text);
-  font: 10px "DM Mono";
+  font: 13px "DM Mono";
   text-transform: uppercase;
 }
 .hero-product-strip img {
@@ -1357,16 +1388,16 @@ h2 em {
 
 .metrics-band span {
   color: var(--red);
-  font: 11px "DM Mono";
+  font: 13px "DM Mono";
 }
 .metrics-band strong {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.3;
 }
 .metrics-note {
   justify-content: center;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.5;
   text-align: center;
 }
@@ -1423,7 +1454,7 @@ h2 em {
   justify-content: space-between;
   gap: 10px;
   color: var(--muted);
-  font: 10px "DM Mono";
+  font: 13px "DM Mono";
   text-transform: uppercase;
 }
 .category-card span svg { color: var(--red-bright); }
@@ -1448,7 +1479,7 @@ h2 {
   max-width: 330px;
   margin-bottom: 4px;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.6;
 }
 .service-grid {
@@ -1511,13 +1542,13 @@ h2 {
   position: absolute;
   top: 20px;
   right: 20px;
-  color: #52555d;
-  font: 10px "DM Mono";
+  color: var(--muted);
+  font: 13px "DM Mono";
 }
 .service-name {
   max-width: 170px;
   color: var(--text);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   line-height: 1.3;
 }
@@ -1554,7 +1585,7 @@ h2 {
 }
 .process-grid span {
   color: var(--red-bright);
-  font: 11px "DM Mono";
+  font: 13px "DM Mono";
 }
 .process-grid h3 {
   margin: 35px 0 8px;
@@ -1564,7 +1595,7 @@ h2 {
   max-width: 230px;
   margin-bottom: 0;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.5;
 }
 .catalog-section {
@@ -1601,14 +1632,14 @@ h2 {
 }
 .product-visual span {
   color: var(--muted);
-  font: 10px "DM Mono";
+  font: 13px "DM Mono";
 }
 .product-info {
   padding: 18px 20px 20px;
 }
 .product-type {
   color: var(--muted);
-  font: 10px "DM Mono";
+  font: 13px "DM Mono";
   text-transform: uppercase;
 }
 .product-info h3 {
@@ -1621,7 +1652,7 @@ h2 {
   justify-content: space-between;
 }
 .product-info strong {
-  font-size: 14px;
+  font-size: 16px;
 }
 .product-info button,
 .modal-close {
@@ -1651,7 +1682,7 @@ h2 {
   justify-content: space-between;
   padding-bottom: 18px;
   border-bottom: 1px solid var(--line);
-  font: 12px "DM Mono";
+  font: 13px "DM Mono";
   text-transform: uppercase;
 }
 
@@ -1661,9 +1692,9 @@ h2 {
   height: 20px;
   place-items: center;
   border-radius: 50%;
-  color: var(--text);
+  color: #fff;
   background: var(--red);
-  font: 10px "Space Grotesk";
+  font: 12px "Space Grotesk";
   margin-left: 5px;
 }
 
@@ -1677,7 +1708,7 @@ h2 {
 }
 .empty-quote p {
   margin: 0;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.6;
 }
 .quote-list {
@@ -1690,7 +1721,7 @@ h2 {
   gap: 10px;
   padding: 10px 0;
   color: var(--text);
-  font-size: 12px;
+  font-size: 13px;
   border-bottom: 1px solid var(--line);
 }
 .quote-list small {
@@ -1707,7 +1738,7 @@ h2 {
   justify-content: space-between;
   padding: 15px 0;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 13px;
   border-top: 1px solid var(--line);
 }
 .quote-total strong {
@@ -1756,7 +1787,7 @@ textarea:focus {
   right: 12px;
   bottom: 13px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 13px;
 }
 .estimate-result {
   display: flex;
@@ -1768,7 +1799,7 @@ textarea:focus {
 }
 .estimate-result span {
   color: var(--muted);
-  font: 10px "DM Mono";
+  font: 13px "DM Mono";
   text-transform: uppercase;
 }
 .estimate-result strong {
@@ -1793,7 +1824,7 @@ textarea:focus {
   padding: 13px;
   color: var(--muted);
   border: 1px dashed var(--line);
-  font-size: 12px;
+  font-size: 13px;
   cursor: pointer;
 }
 .file-label input {
@@ -1807,7 +1838,7 @@ textarea:focus {
   padding: 28px 5vw;
   color: var(--muted);
   border-top: 1px solid var(--line);
-  font: 10px "DM Mono";
+  font: 13px "DM Mono";
 }
 .site-footer > a:last-child {
   display: flex;
@@ -1883,6 +1914,7 @@ textarea:focus {
   margin: -16px 0;
   padding: 16px 0;
   background: var(--surface);
+  box-shadow: 0 42px 0 42px var(--surface);
 }
 .service-modal-video {
   display: block;
@@ -1992,7 +2024,7 @@ textarea:focus {
   .hero-product-strip span {
     top: 7px;
     left: 7px;
-    font-size: 8px;
+    font-size: 13px;
   }
   .machine-block {
     left: 18%;
@@ -2014,7 +2046,7 @@ textarea:focus {
     padding-bottom: 28px;
   }
   .metrics-band strong {
-    font-size: 12px;
+    font-size: 13px;
   }
   .content-section,
   .process-section,
@@ -2225,7 +2257,7 @@ textarea:focus {
   border: 1px solid rgba(243, 244, 246, 0.3);
   background: rgba(15, 15, 18, 0.65);
   font:
-    10px "DM Mono",
+    13px "DM Mono",
     monospace;
   text-transform: uppercase;
 }
@@ -2240,7 +2272,7 @@ textarea:focus {
   gap: 5px;
   color: var(--text);
   font:
-    10px "DM Mono",
+    13px "DM Mono",
     monospace;
   opacity: 0;
   transform: translateY(5px);
@@ -2267,7 +2299,7 @@ textarea:focus {
   grid-row: span 2;
   color: var(--red-bright);
   font:
-    11px "DM Mono",
+    13px "DM Mono",
     monospace;
 }
 
@@ -2279,7 +2311,7 @@ textarea:focus {
 .gallery-caption p {
   margin: 0;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.45;
 }
 
@@ -2316,7 +2348,7 @@ textarea:focus {
 .gallery-lightbox-copy > span {
   color: var(--red-bright);
   font:
-    11px "DM Mono",
+    13px "DM Mono",
     monospace;
 }
 
@@ -2337,7 +2369,7 @@ textarea:focus {
   max-width: 480px;
   margin: 28px 0;
   color: var(--muted);
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.7;
 }
 
@@ -2346,7 +2378,7 @@ textarea:focus {
   align-items: center;
   gap: 8px;
   color: var(--text);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
 }
 
@@ -2384,7 +2416,7 @@ textarea:focus {
   margin-top: 8px;
   color: var(--muted);
   font:
-    10px "DM Mono",
+    13px "DM Mono",
     monospace;
   line-height: 1.5;
   text-transform: uppercase;
@@ -2400,7 +2432,7 @@ textarea:focus {
   align-items: center;
   gap: 9px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .about-values svg {
@@ -2418,7 +2450,7 @@ textarea:focus {
 .service-toolbar > span {
   color: var(--muted);
   font:
-    10px "DM Mono",
+    13px "DM Mono",
     monospace;
   text-transform: uppercase;
 }
@@ -2481,7 +2513,7 @@ textarea:focus {
   color: var(--muted);
   border: 1px solid var(--line);
   background: var(--surface);
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .marquee-card svg {
@@ -2509,7 +2541,7 @@ textarea:focus {
   align-items: center;
   gap: 9px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .spec-list svg {
@@ -2591,7 +2623,7 @@ textarea:focus {
   margin: -22px 0 22px;
   color: #86efac;
   font:
-    11px "DM Mono",
+    13px "DM Mono",
     monospace;
 }
 
@@ -2611,7 +2643,7 @@ textarea:focus {
   background: transparent;
   cursor: pointer;
   font:
-    10px "DM Mono",
+    13px "DM Mono",
     monospace;
   text-transform: uppercase;
 }
@@ -2633,7 +2665,7 @@ textarea:focus {
 
 .quote-item-name small {
   color: var(--muted);
-  font-size: 10px;
+  font-size: 13px;
 }
 
 .quote-item-actions {
@@ -2688,7 +2720,7 @@ textarea:focus {
 .mobile-nav,
 .header-cta,
 .button {
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .quote-cart {
@@ -2702,7 +2734,7 @@ textarea:focus {
 
 .quote-cart strong {
   color: var(--text);
-  font-size: 12px;
+  font-size: 13px;
   white-space: nowrap;
 }
 
@@ -2747,13 +2779,13 @@ textarea:focus {
 }
 
 .cart-drawer .cart-item strong {
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .cart-drawer .cart-item small {
   margin-top: 5px;
   color: var(--muted);
-  font: 10px "DM Mono";
+  font: 13px "DM Mono";
 }
 
 .cart-drawer .quantity {
@@ -2800,7 +2832,7 @@ textarea:focus {
   padding: 20px 0;
   border-top: 1px solid var(--line);
   color: var(--muted);
-  font: 11px "DM Mono";
+  font: 13px "DM Mono";
 }
 
 .cart-drawer .cart-total strong {
@@ -2814,7 +2846,7 @@ textarea:focus {
   justify-content: center;
   gap: 8px;
   min-height: 48px;
-  color: var(--text);
+  color: #fff;
   border: 0;
   background: var(--red);
   cursor: pointer;
@@ -2871,7 +2903,7 @@ textarea:focus {
 .estimate-result span,
 .clear-cart,
 .site-footer {
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .metrics-note,
@@ -2884,14 +2916,14 @@ textarea:focus {
 .quote-total,
 .service-name,
 .process-grid p {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .quote-item-name small,
 .quote-item-actions small,
 .number-input span,
 .about-stats small {
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .desktop-nav {
@@ -2999,5 +3031,19 @@ textarea:focus {
     width: 100%;
     padding: 24px 20px;
   }
+}
+input,
+textarea,
+select {
+  font-size: 16px;
+  line-height: 1.4;
+}
+input::placeholder,
+textarea::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+.button.button-primary:hover {
+  color: var(--bg);
 }
 </style>
