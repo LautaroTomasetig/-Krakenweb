@@ -490,7 +490,7 @@ const services: Service[] = [
     detail:
       "Plegado CNC de hasta 3 metros para prototipos y estructuras repetibles.",
     icon: Layers3,
-    video: "/img/Plegado.mp4",
+    video: "/img/plegado.mp4",
   },
   {
     name: "Panelado",
