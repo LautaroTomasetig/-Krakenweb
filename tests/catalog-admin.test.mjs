@@ -307,3 +307,33 @@ test('negative-combination validation includes product gain when saving config o
   await assert.rejects(api.updateProduct('rack',api.productInput({markupPercent:0},product)),{statusCode:400});
   assert.equal(state.docs.get('products/rack').markupPercent,100);
 });
+
+test('product descriptions and specifications survive creation, loading, partial edits and explicit clearing',async()=>{
+  const category=await api.mutateCategory('create',undefined,{name:'Accesorios'});
+  const technicalDescription='Primer párrafo\n\nSegundo párrafo\n  Texto con espacios';
+  const specifications='1 Bastidor #18/#16\r\n• Altura: 200cm\r\n\r\n✓ Tuercas y tornillos\n<b>Texto literal</b>';
+  await api.createProduct(api.productInput({...validProduct(category.id),technicalDescription,specifications}));
+  const [loaded]=await api.loadProducts();
+  assert.equal(loaded.technicalDescription,technicalDescription);
+  assert.equal(loaded.specifications,specifications);
+  assert.equal(state.docs.get('products/rack-prueba').specifications,specifications);
+  await api.updateProduct(loaded.id,api.productInput({name:'Nombre actualizado'},loaded));
+  const [edited]=await api.loadProducts();
+  assert.equal(edited.specifications,specifications);
+  assert.equal(edited.technicalDescription,technicalDescription);
+  await api.updateProduct(edited.id,api.productInput({specifications:'',technicalDescription:''},edited));
+  const [cleared]=await api.loadProducts();
+  assert.equal(cleared.specifications,'');
+  assert.equal(cleared.technicalDescription,'');
+});
+
+test('product text fields accept strings only and support legacy products without specifications',()=>{
+  const base=validProduct('accessories');
+  assert.equal(api.productInput(base).specifications,'');
+  assert.equal(api.productInput({}, {...base,technicalDescription:'Descripción existente'}).technicalDescription,'Descripción existente');
+  assert.equal(api.productInput({}, {...base,technicalDescription:'Descripción existente'}).specifications,'');
+  for(const field of ['technicalDescription','specifications']) {
+    for(const value of [42,null,[],{},true]) assert.throws(()=>api.productInput({...base,[field]:value}),{statusCode:400});
+    assert.equal(api.productInput({...base,[field]:'\n  Texto\n\n'} )[field],'\n  Texto\n\n');
+  }
+});

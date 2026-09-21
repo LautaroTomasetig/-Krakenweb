@@ -200,3 +200,55 @@ test('admin editing a rack keeps product gain visible and updates its sale previ
   assert.equal(requests[0].body.priceBase,750000);
   assert.equal(requests[0].body.markupPercent,40);
 });
+
+test('product detail preserves multiline text and escapes HTML in description and specifications',async()=>{
+  products.value[0].technicalDescription='Primer párrafo\n\nSegundo párrafo\n<b>Texto literal</b>';
+  products.value[0].specifications='Bastidor #18/#16\n• Altura: 200cm\n\n✓ Tuercas y tornillos\n<script>alert(1)</script>';
+  const page=await mountPage('../app/pages/productos/[slug].vue');
+  assert.ok(page.html.includes('Primer párrafo\n\nSegundo párrafo\n&lt;b&gt;Texto literal&lt;/b&gt;'));
+  assert.ok(page.html.includes('Bastidor #18/#16\n• Altura: 200cm\n\n✓ Tuercas y tornillos'));
+  assert.ok(page.html.includes('&lt;script&gt;alert(1)&lt;/script&gt;'));
+  assert.equal(page.nodes('script').length,0);
+  assert.equal(page.nodes('p').filter(node=>node.props?.class==='product-text').length,2);
+});
+
+test('product detail omits specifications heading and content for missing or blank values',async()=>{
+  for(const value of [undefined,'','  \n\t']) {
+    products.value[0].specifications=value;
+    const page=await mountPage('../app/pages/productos/[slug].vue');
+    assert.ok(!page.html.includes('<h2>Especificaciones</h2>'));
+    assert.equal(page.nodes('p').filter(node=>node.props?.class==='product-text').length,1);
+  }
+});
+
+test('admin loads, saves and resets specifications when switching products or starting a new one',async()=>{
+  const original='Bastidor\n\n• Altura: 200cm';
+  products.value[0].specifications=original;
+  products.value.push({...products.value[0],id:'legacy',slug:'legacy',name:'Producto anterior',specifications:undefined});
+  const requests=[];
+  globalThis.__rackUi.fetch=async(url,options)=>{if(url==='/api/admin/gallery')return [];requests.push({url,...options});return {};};
+  const page=await mountPage('../app/pages/admin/productos.vue');
+  click(page.nodes('button').find(node=>node.props.class==='icon-button'));
+  await page.update();
+  assert.ok(page.html.includes('Bastidor\n\n• Altura: 200cm'));
+  const textareas=page.nodes('textarea');
+  assert.equal(textareas.length,2);
+  const description='Descripción\n\nSegundo párrafo';
+  const specifications='Largueros\n✓ Tornillos\n\n  Texto final';
+  textareas[0].props['onUpdate:modelValue'](description);
+  textareas[1].props['onUpdate:modelValue'](specifications);
+  await page.update();
+  await page.nodes('form')[0].props.onSubmit({preventDefault(){}});
+  assert.equal(requests[0].body.technicalDescription,description);
+  assert.equal(requests[0].body.specifications,specifications);
+  await page.update();
+  assert.ok(!page.html.includes('Largueros\n✓ Tornillos'));
+  click(page.nodes('button').filter(node=>node.props.class==='icon-button')[0]);
+  await page.update();
+  assert.ok(page.html.includes('Bastidor\n\n• Altura: 200cm'));
+  click(page.nodes('button').filter(node=>node.props.class==='icon-button')[1]);
+  await page.update();
+  assert.ok(!page.html.includes('Bastidor\n\n• Altura: 200cm'));
+  await page.nodes('form')[0].props.onSubmit({preventDefault(){}});
+  assert.equal(requests[1].body.specifications,'');
+});

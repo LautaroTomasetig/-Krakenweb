@@ -14,6 +14,7 @@ export type CatalogProduct = {
   priceTo: number;
   description: string;
   technicalDescription: string;
+  specifications?: string;
   category: string;
   image: string;
   images: string[];
