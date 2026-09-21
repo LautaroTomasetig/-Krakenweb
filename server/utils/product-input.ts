@@ -2,7 +2,7 @@ import { createError } from "h3";
 import type { CatalogProduct } from "../../data/products";
 import { productBasePrice } from "../../data/product-pricing";
 
-export function productInput(body: Partial<CatalogProduct> | null, previous?: CatalogProduct) {
+export function productInput(body: Partial<CatalogProduct> | null, previous?: CatalogProduct, isRack = previous?.isRack === true) {
   if (!body || typeof body !== "object") throw createError({ statusCode: 400, statusMessage: "Producto inválido" });
   const name = body.name ?? previous?.name;
   const slug = body.slug ?? previous?.slug;
@@ -10,10 +10,10 @@ export function productInput(body: Partial<CatalogProduct> | null, previous?: Ca
   if (typeof name !== "string" || !name.trim() || typeof slug !== "string" || !slug.trim() || slug.includes("/") || typeof categoryId !== "string" || !categoryId) {
     throw createError({ statusCode: 400, statusMessage: "Nombre, slug y categoría son obligatorios" });
   }
-  const priceBase = body.priceBase ?? productBasePrice(previous || {});
+  const priceBase = body.priceBase ?? (isRack ? previous?.priceBase : productBasePrice(previous || {}));
   const markupPercent = body.markupPercent ?? previous?.markupPercent ?? 0;
-  if (typeof priceBase !== "number" || typeof markupPercent !== "number" || !Number.isFinite(priceBase) || !Number.isFinite(markupPercent) || priceBase < 0 || markupPercent < 0 || !Number.isFinite(priceBase * (1 + markupPercent / 100))) {
-    throw createError({ statusCode: 400, statusMessage: "El precio base y el porcentaje deben ser números válidos mayores o iguales a cero" });
+  if (typeof priceBase !== "number" || !Number.isFinite(priceBase) || priceBase < 0 || typeof markupPercent !== "number" || !Number.isFinite(markupPercent) || markupPercent < 0 || !Number.isFinite(priceBase * (1 + markupPercent / 100))) {
+    throw createError({ statusCode: 400, statusMessage: "El costo y el porcentaje de ganancia deben ser números válidos mayores o iguales a cero" });
   }
   const selectedImages = Array.isArray(body.images) ? body.images.filter(image => typeof image === "string" && image).slice(0,4) : previous?.images;
   const images = selectedImages?.length ? selectedImages : [body.image || previous?.image || "/img/moldes.JPG"];

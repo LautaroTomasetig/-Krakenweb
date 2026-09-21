@@ -4,6 +4,8 @@ import type { CatalogProduct } from "../../data/products";
 import { categoryForProduct, initialCategories, type ProductCategory } from "../../data/categories";
 import { categoriesRef, loadCategories, rawCategoryProducts } from "./category-store";
 import { db } from "./firebase.js";
+import { normalizeRackCalculator, settingsForRack } from "../../data/rack-calculator";
+import { assertRackPriceValid, rackCalculatorRef } from "./rack-calculator-store";
 
 export const DEFAULT_PRODUCT_IMAGE = "/img/moldes.JPG";
 
@@ -38,6 +40,10 @@ async function saveProduct(id: string, product: Partial<CatalogProduct>, creatin
     if (!category) throw createError({ statusCode: 400, statusMessage: "La categoría ya no existe. Elegí otra categoría." });
     const previous = snapshot.data() || {};
     const data = { ...product };
+    if (category.isRack) {
+      const calculator = normalizeRackCalculator((await transaction.get(rackCalculatorRef())).data());
+      assertRackPriceValid({ ...previous, ...data }, settingsForRack(calculator, { id }), data.name || previous.name || id);
+    }
     // price/priceFrom/priceTo and any other legacy fields remain untouched.
     transaction.set(ref, data, { merge: true });
     transaction.set(categoryRef, { items: categories, revision: (categorySnapshot.data()?.revision || 0) + 1 }, { merge: true });

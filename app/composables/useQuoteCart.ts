@@ -1,8 +1,13 @@
+import type { RackOption, RackOptionKey } from "../../data/rack-calculator";
 export type QuoteItem = {
   name: string;
   quantity: number;
   price: number;
   details?: string;
+  productId?: string;
+  pricingVersion?: 2;
+  quoteKey?: string;
+  rackSelection?: Record<RackOptionKey, RackOption>;
 };
 
 export function useQuoteCart() {
@@ -22,24 +27,28 @@ export function useQuoteCart() {
   );
 
   function addToQuote(product: Omit<QuoteItem, "quantity">, quantity = 1) {
+    const matches = (item: QuoteItem) => product.quoteKey
+      ? item.quoteKey === product.quoteKey
+      : !item.quoteKey && item.name === product.name && item.details === product.details;
     const existing = quoteItems.value.find(
-      (item) => item.name === product.name && item.details === product.details,
+      matches,
     );
     quoteItems.value = existing
       ? quoteItems.value.map((item) =>
-          item.name === product.name && item.details === product.details
-            ? { ...item, quantity: item.quantity + quantity }
+          matches(item)
+            ? { ...item, ...(product.quoteKey ? product : {}), quantity: item.quantity + quantity }
             : item,
         )
       : [...quoteItems.value, { ...product, quantity }];
     quoteCartOpen.value = true;
   }
 
-  function updateQuoteQuantity(name: string, change: number, details?: string) {
-    const item = quoteItems.value.find((quoteItem) => quoteItem.name === name && quoteItem.details === details);
+  function updateQuoteQuantity(name: string, change: number, details?: string, quoteKey?: string) {
+    const matches = (item: QuoteItem) => quoteKey ? item.quoteKey === quoteKey : !item.quoteKey && item.name === name && item.details === details;
+    const item = quoteItems.value.find(matches);
     if (item) {
       quoteItems.value = quoteItems.value.map((quoteItem) =>
-        quoteItem.name === name && quoteItem.details === details
+        matches(quoteItem)
           ? { ...quoteItem, quantity: Math.max(1, quoteItem.quantity + change) }
           : quoteItem,
       );
