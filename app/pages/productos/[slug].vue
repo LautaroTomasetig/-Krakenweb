@@ -67,7 +67,7 @@ function addProduct() {
 function requestQuote() {
   if (!product.value || (isRack.value && !quote.value.ready)) return;
   const detail = isRack.value && quote.value.ready ? rackQuoteItem(product.value, quote.value).details + ', cantidad ' + quantity.value : 'Cantidad: ' + quantity.value;
-  window.open('https://wa.me/5491131250453?text=' + encodeURIComponent('Hola! Quisiera cotizar ' + product.value.name + '. ' + detail), '_blank');
+  window.open('https://wa.me/5491124820182?text=' + encodeURIComponent('Hola! Quisiera cotizar ' + product.value.name + '. ' + detail), '_blank');
 }
 useHead(() => ({ title: product.value ? product.value.name + ' | Kraken' : 'Producto | Kraken' }));
 </script>

@@ -775,7 +775,7 @@ function createQuotePayload(extraItem?: QuoteItem) {
 
 function sendWhatsApp(message = createQuotePayload()) {
   window.open(
-    `https://wa.me/5491131250453?text=${encodeURIComponent(message)}`,
+    `https://wa.me/5491124820182?text=${encodeURIComponent(message)}`,
     "_blank",
   );
 }

@@ -21,5 +21,5 @@
 import { Minus, Plus, Send, ShoppingCart, X } from "lucide-vue-next";
 const { quoteItems, quoteTotal, quoteItemCount, quoteCartOpen, updateQuoteQuantity, clearQuote, closeQuoteCart } = useQuoteCart();
 const formatPrice = (value: number) => value ? `$ ${value.toLocaleString("es-AR")}` : "$0";
-function sendQuote() { window.open(`https://wa.me/5491131250453?text=${encodeURIComponent(quoteItems.value.map((item) => `- ${item.name} x${item.quantity}: ${formatPrice(item.price)} c/u${item.details ? ` (${item.details})` : ""}`).join("\n"))}`, "_blank"); }
+function sendQuote() { window.open(`https://wa.me/5491124820182?text=${encodeURIComponent(quoteItems.value.map((item) => `- ${item.name} x${item.quantity}: ${formatPrice(item.price)} c/u${item.details ? ` (${item.details})` : ""}`).join("\n"))}`, "_blank"); }
 </script>
